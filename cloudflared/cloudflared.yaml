@@ -83,5 +83,7 @@ data:
     # Replace yourselves' domain
     - hostname: nas-tools.yuchanns.xyz
       service: http://nas-tools.home-theater:3000
+    - hostname: emby.yuchanns.xyz
+      service: http://emby.home-theater:8096
     - service: http_status:404
 
