@@ -28,3 +28,12 @@
     # replace emby.yuchanns.xyz to yourselves' domain
     cloudflared tunnel route dns k3slab emby.yuchanns.xyz
     ```
+5. I use [qbittorrent](https://github.com/linuxserver/docker-qbittorrent) as the Downloader:
+    ```bash
+    kubectl apply -f ./qbittorrent.yaml
+    ```
+    (optional) Expose `qbittorrent` app on the Internet by Cloudflare Tunnel:
+    ```bash
+    # replace emby.yuchanns.xyz to yourselves' domain
+    cloudflared tunnel route dns k3slab qbittorrent.yuchanns.xyz
+    ```

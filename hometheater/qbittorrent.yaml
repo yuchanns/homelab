@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qbittorrent
+  namespace: home-theater
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qbittorrent
+  template:
+    metadata:
+      labels:
+        app: qbittorrent
+    spec:
+      containers:
+      - image: linuxserver/qbittorrent:4.5.2
+        imagePullPolicy: IfNotPresent
+        name: qbittorrent
+        env:
+        - name: TZ
+          value: Asia/Shanghai
+        - name: WEBUI_PORT
+          value: "8080"
+        ports:
+        - containerPort: 8080
+          name: webui
+          protocol: TCP
+        - containerPort: 6881
+          name: apitcp
+          protocol: TCP
+        - containerPort: 6881
+          name: apiudp
+          protocol: UDP
+        volumeMounts:
+        - mountPath: /config
+          name: home-theater
+          subPath: qbittorrent-config
+        - mountPath: /downloads
+          name: home-theater
+          subPath: media
+      volumes:
+      - name: home-theater
+        persistentVolumeClaim:
+          claimName: home-theater
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qbittorrent
+  namespace: home-theater
+  labels:
+    app: qbittorrent
+spec:
+  ports:
+  - port: 8080
+    name: webui
+  - port: 6881
+    name: api
+  selector:
+    app: qbittorrent
+
