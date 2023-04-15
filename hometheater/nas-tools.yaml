@@ -14,7 +14,7 @@ spec:
         app: nas-tools
     spec:
       containers:
-      - image: jxxghp/nas-tools:3.1.5
+      - image: diluka/nas-tools:2.9.1
         imagePullPolicy: IfNotPresent
         name: nas-tools
         ports:
@@ -24,10 +24,15 @@ spec:
         volumeMounts:
         - mountPath: /config
           name: home-theater
-          subPath: nas-tools-config
+          subPath: nastools-config
         - mountPath: /media
           name: home-theater
           subPath: media
+        env:
+        - name: NASTOOL_AUTO_UPDATE
+          value: "false"
+        - name: NASTOOL_CN_UPDATE
+          value: "false"
       volumes:
       - name: home-theater
         persistentVolumeClaim:
@@ -44,6 +49,22 @@ spec:
   ports:
   - port: 3000
     name: http
+  selector:
+    app: nas-tools
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nas-tools-nodport
+  namespace: home-theater
+  labels:
+    app: nas-tools
+spec:
+  ports:
+  - port: 3000
+    name: http
+    nodePort: 31300
+  type: NodePort
   selector:
     app: nas-tools
 
