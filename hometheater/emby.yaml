@@ -51,4 +51,20 @@ spec:
     name: http
   selector:
     app: emby
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: emby-nodeport
+  namespace: home-theater
+  labels:
+    app: emby
+spec:
+  ports:
+  - port: 8096
+    nodePort: 31096
+    name: http
+  type: NodePort
+  selector:
+    app: emby
 
