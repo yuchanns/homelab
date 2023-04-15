@@ -14,8 +14,17 @@
     ```bash
     kubectl apply -f ./nas-tools.yaml
     ```
-4. (optional) Expose `nas-tools` app on the Internet by Cloudflare Tunnel:
+    (optional) Expose `nas-tools` app on the Internet by Cloudflare Tunnel:
     ```bash
-    # replace nas-tools.yuchanns.xyz to yourselves domain
+    # replace nas-tools.yuchanns.xyz to yourselves' domain
     cloudflared tunnel route dns k3slab nas-tools.yuchanns.xyz
+    ```
+4. I use [emby](https://emby.media/) as the Media Library:
+    ```bash
+    kubectl apply -f ./emby.yaml
+    ```
+    (optional) Expose `emby` app on the Internet by Cloudflare Tunnel:
+    ```bash
+    # replace emby.yuchanns.xyz to yourselves' domain
+    cloudflared tunnel route dns k3slab emby.yuchanns.xyz
     ```
