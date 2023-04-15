@@ -37,3 +37,8 @@
     # replace emby.yuchanns.xyz to yourselves' domain
     cloudflared tunnel route dns k3slab qbittorrent.yuchanns.xyz
     ```
+6. I use [jackett](https://github.com/linuxserver/docker-jackett) as the Indexer:
+    ```bash
+    kubectl apply -f ./jackett.yaml
+    ```
+
