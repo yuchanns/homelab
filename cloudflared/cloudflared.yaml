@@ -85,5 +85,7 @@ data:
       service: http://nas-tools.home-theater:3000
     - hostname: emby.yuchanns.xyz
       service: http://emby.home-theater:8096
+    - hostname: qbittorrent.yuchanns.xyz
+      service: http://qbittorrent.home-theater:8080
     - service: http_status:404
 
