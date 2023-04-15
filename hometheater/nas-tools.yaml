@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nas-tools
+  namespace: home-theater
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nas-tools
+  template:
+    metadata:
+      labels:
+        app: nas-tools
+    spec:
+      containers:
+      - image: jxxghp/nas-tools:3.1.5
+        imagePullPolicy: IfNotPresent
+        name: nas-tools
+        ports:
+        - containerPort: 3000
+          name: webui
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /config
+          name: home-theater
+          subPath: nas-tools-config
+        - mountPath: /media
+          name: home-theater
+          subPath: nas-tools-media
+      volumes:
+      - name: home-theater
+        persistentVolumeClaim:
+          claimName: home-theater
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nas-tools
+  namespace: home-theater
+  labels:
+    app: nas-tools
+spec:
+  ports:
+  - port: 3000
+    name: http
+  selector:
+    app: nas-tools
+
