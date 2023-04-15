@@ -27,7 +27,7 @@ spec:
           subPath: nas-tools-config
         - mountPath: /media
           name: home-theater
-          subPath: nas-tools-media
+          subPath: media
       volumes:
       - name: home-theater
         persistentVolumeClaim:

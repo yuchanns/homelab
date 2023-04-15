@@ -27,12 +27,9 @@ spec:
         - mountPath: /config
           name: home-theater
           subPath: emby-config
-        - mountPath: /movies
+        - mountPath: /media
           name: home-theater
-          subPath: emby-media
-        - mountPath: /tvshows
-          name: home-theater
-          subPath: emby-tvshows
+          subPath: media
       volumes:
       - name: home-theater
         persistentVolumeClaim:
