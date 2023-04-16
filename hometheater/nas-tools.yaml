@@ -29,6 +29,10 @@ spec:
           name: home-theater
           subPath: media
         env:
+        - name: PUID
+          value: "1000"
+        - name: GUID
+          value: "1000"
         - name: NASTOOL_AUTO_UPDATE
           value: "false"
         - name: NASTOOL_CN_UPDATE

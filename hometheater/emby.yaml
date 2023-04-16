@@ -21,6 +21,10 @@ spec:
         - containerPort: 8096
           protocol: TCP
         env:
+        - name: PUID
+          value: "1000"
+        - name: GUID
+          value: "1000"
         - name: TZ
           value: Asia/Shanghai
         volumeMounts:
