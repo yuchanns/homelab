@@ -29,10 +29,6 @@ spec:
           name: home-theater
           subPath: media
         env:
-        - name: PUID
-          value: "1000"
-        - name: GUID
-          value: "1000"
         - name: NASTOOL_AUTO_UPDATE
           value: "false"
         - name: NASTOOL_CN_UPDATE
@@ -71,4 +67,19 @@ spec:
   type: NodePort
   selector:
     app: nas-tools
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nas-tools-insecure
+  namespace: home-theater
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`nas-tools.yuchanns.xyz`)
+      kind: Rule
+      services:
+        - name: nas-tools
+          port: 3000
 

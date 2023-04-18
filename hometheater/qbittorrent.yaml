@@ -30,12 +30,6 @@ spec:
         - containerPort: 8080
           name: webui
           protocol: TCP
-        - containerPort: 6881
-          name: apitcp
-          protocol: TCP
-        - containerPort: 6881
-          name: apiudp
-          protocol: UDP
         volumeMounts:
         - mountPath: /config
           name: home-theater
@@ -59,8 +53,21 @@ spec:
   ports:
   - port: 8080
     name: webui
-  - port: 6881
-    name: api
   selector:
     app: qbittorrent
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: qbittorrent-insecure
+  namespace: home-theater
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`qbittorrent.yuchanns.xyz`)
+      kind: Rule
+      services:
+        - name: qbittorrent
+          port: 8080
 
