@@ -82,10 +82,10 @@ data:
     ingress:
     # Replace yourselves' domain
     - hostname: nas-tools.yuchanns.xyz
-      service: http://nas-tools.home-theater:3000
+      service: http://traefik.kube-system:80
     - hostname: emby.yuchanns.xyz
-      service: http://emby.home-theater:8096
+      service: http://traefik.kube-system:80
     - hostname: qbittorrent.yuchanns.xyz
-      service: http://qbittorrent.home-theater:8080
+      service: http://traefik.kube-system:80
     - service: http_status:404
 
