@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subfinder
+  namespace: home-theater
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: subfinder
+  template:
+    metadata:
+      labels:
+        app: subfinder
+    spec:
+      containers:
+      - image: allanpk716/chinesesubfinder:v0.52.3
+        imagePullPolicy: IfNotPresent
+        name: subfinder
+        ports:
+        - containerPort: 19035
+          protocol: TCP
+        - containerPort: 19037
+          protocol: TCP
+        env:
+        - name: PUID
+          value: "1000"
+        - name: GUID
+          value: "1000"
+        - name: PERMS
+          value: "false"
+        - name: UMASK
+          value: "022"
+        - name: TZ
+          value: Asia/Shanghai
+        volumeMounts:
+        - mountPath: /config
+          name: home-theater
+          subPath: subfinder-config
+        - mountPath: /root/.cache/rod/browser
+          name: home-theater
+          subPath: subfinder-browser
+        - mountPath: /media
+          name: home-theater-ext
+          subPath: media
+      volumes:
+      - name: home-theater
+        persistentVolumeClaim:
+          claimName: home-theater
+      - name: home-theater-ext
+        persistentVolumeClaim:
+          claimName: home-theater-ext
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: subfinder
+  namespace: home-theater
+  labels:
+    app: subfinder
+spec:
+  ports:
+  - port: 19035
+    name: http
+  selector:
+    app: subfinder
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: subfinder-nodeport
+  namespace: home-theater
+  labels:
+    app: subfinder
+spec:
+  ports:
+  - port: 19035
+    nodePort: 31090
+    name: http
+  type: NodePort
+  selector:
+    app: subfinder
