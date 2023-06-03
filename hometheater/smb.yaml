@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smb
+  namespace: home-theater
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smb
+  template:
+    metadata:
+      labels:
+        app: smb
+    spec:
+      containers:
+      - env:
+        - name: USERID
+          value: "1000"
+        - name: GROUPID
+          value: "1000"
+        - name: TZ
+          value: Asia/Shanghai
+        - name: SAMBA_HOSTS_ALLOW
+          value: 0.0.0.0/0
+        image: crazymax/samba:latest
+        imagePullPolicy: IfNotPresent
+        name: smb
+        ports:
+        - containerPort: 445
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /data-share
+          name: home-theater
+          subPath: media
+        - mountPath: /data-share-new
+          name: home-theater-ext
+          subPath: media
+        - mountPath: /data
+          name: home-theater
+          subPath: smb-config
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: home-theater
+        persistentVolumeClaim:
+          claimName: home-theater
+      - name: home-theater-ext
+        persistentVolumeClaim:
+          claimName: home-theater-ext

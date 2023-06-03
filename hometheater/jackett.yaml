@@ -30,12 +30,15 @@ spec:
           name: home-theater
           subPath: jackett-config
         - mountPath: /downloads
-          name: home-theater
+          name: home-theater-ext
           subPath: jackett-downloads
       volumes:
       - name: home-theater
         persistentVolumeClaim:
           claimName: home-theater
+      - name: home-theater-ext
+        persistentVolumeClaim:
+          claimName: home-theater-ext
 ---
 apiVersion: v1
 kind: Service

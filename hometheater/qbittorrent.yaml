@@ -35,12 +35,15 @@ spec:
           name: home-theater
           subPath: qbittorrent-config
         - mountPath: /downloads
-          name: home-theater
+          name: home-theater-ext
           subPath: media
       volumes:
       - name: home-theater
         persistentVolumeClaim:
           claimName: home-theater
+      - name: home-theater-ext
+        persistentVolumeClaim:
+          claimName: home-theater-ext
 ---
 apiVersion: v1
 kind: Service

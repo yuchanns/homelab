@@ -32,12 +32,15 @@ spec:
           name: home-theater
           subPath: emby-config
         - mountPath: /media
-          name: home-theater
+          name: home-theater-ext
           subPath: media
       volumes:
       - name: home-theater
         persistentVolumeClaim:
           claimName: home-theater
+      - name: home-theater-ext
+        persistentVolumeClaim:
+          claimName: home-theater-ext
 ---
 apiVersion: v1
 kind: Service
