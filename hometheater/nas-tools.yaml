@@ -13,6 +13,7 @@ spec:
       labels:
         app: nas-tools
     spec:
+      hostname: nas-tools
       containers:
       - image: diluka/nas-tools:2.9.1
         imagePullPolicy: IfNotPresent

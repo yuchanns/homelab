@@ -13,6 +13,7 @@ spec:
       labels:
         app: smb
     spec:
+      hostname: smb
       containers:
       - env:
         - name: USERID

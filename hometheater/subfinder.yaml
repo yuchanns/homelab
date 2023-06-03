@@ -13,6 +13,7 @@ spec:
       labels:
         app: subfinder
     spec:
+      hostname: subfinder
       containers:
       - image: allanpk716/chinesesubfinder:v0.52.3
         imagePullPolicy: IfNotPresent

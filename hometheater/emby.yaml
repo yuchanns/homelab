@@ -13,6 +13,7 @@ spec:
       labels:
         app: emby
     spec:
+      hostname: emby
       containers:
       - image: lscr.io/linuxserver/emby:4.7.11
         imagePullPolicy: IfNotPresent
