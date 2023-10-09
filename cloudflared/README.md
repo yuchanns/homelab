@@ -17,8 +17,14 @@
     cloudflared tunnel create k3slab
     ```
     You should get a tunnel k3slab with a `${TUNNELID}`.
+
+3. Create a Tunnel Route DNS:
+    ```bash
+    cloudflared tunnel route dns k3slab alist.yuchanns.xyz
+    ```
+    **Note** that you should replace the route to yourselves'.
     
-3. Then create cloudflared associated resouces:
+4. Then create cloudflared associated resouces:
     ```bash
     # Upload the Tunnel credentials file to k3s
     kubectl create secret generic tunnel-credentials \

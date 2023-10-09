@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alist
+  namespace: home-theater
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alist
+  template:
+    metadata:
+      labels:
+        app: alist
+    spec:
+      hostname: alist
+      containers:
+      - image: xhofe/alist-aria2:v3.28.0
+        imagePullPolicy: IfNotPresent
+        name: alist
+        ports:
+        - containerPort: 5244
+          name: webui
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /opt/alist/data
+          name: home-theater
+          subPath: alist-data
+        env:
+        - name: PUID
+          value: "0"
+        - name: GUID
+          value: "0"
+        - name: UMASK
+          value: "022"
+      volumes:
+      - name: home-theater
+        persistentVolumeClaim:
+          claimName: home-theater
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alist
+  namespace: home-theater
+  labels:
+    app: alist
+spec:
+  ports:
+  - port: 5244
+    name: http
+  selector:
+    app: alist
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alist-nodport
+  namespace: home-theater
+  labels:
+    app: alist
+spec:
+  ports:
+  - port: 5244
+    name: http
+    nodePort: 31324
+  type: NodePort
+  selector:
+    app: alist
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: alist-insecure
+  namespace: home-theater
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`alist.yuchanns.xyz`)
+      kind: Rule
+      services:
+        - name: alist
+          port: 5244
+
