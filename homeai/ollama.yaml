@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ollama
+  namespace: home-ai
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ollama
+  template:
+    metadata:
+      labels:
+        app: ollama
+    spec:
+      hostname: ollama
+      containers:
+      - image: ollama/ollama:0.1.27
+        imagePullPolicy: IfNotPresent
+        name: ollama
+        env:
+        - name: OLLAMA_HOST
+          value: 0.0.0.0
+        ports:
+        - containerPort: 11434
+          name: webui
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /usr/share/ollama/.ollama/models
+          name: home-ai
+          subPath: ollama_models
+      volumes:
+      - name: home-ai
+        persistentVolumeClaim:
+          claimName: home-ai
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama
+  namespace: home-ai
+  labels:
+    app: ollama
+spec:
+  ports:
+  - port: 11434
+    name: http
+  selector:
+    app: ollama
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ollama-insecure
+  namespace: home-ai
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`ollama.yuchanns.xyz`)
+      kind: Rule
+      services:
+        - name: ollama
+          port: 11434
+
