@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat
+  namespace: home-ai
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat
+  template:
+    metadata:
+      labels:
+        app: chat
+    spec:
+      hostname: chat
+      containers:
+      - image: gosuto/chatgpt-next-web-langchain:v2.10.1
+        imagePullPolicy: IfNotPresent
+        name: chat
+        env:
+        - name: CHOOSE_SEARCH_ENGINE
+          value: google
+        ports:
+        - containerPort: 3000
+          name: webui
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat
+  namespace: home-ai
+  labels:
+    app: chat
+spec:
+  ports:
+  - port: 3000
+    name: http
+  selector:
+    app: chat
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: chat-insecure
+  namespace: home-ai
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`chat.yuchanns.xyz`)
+      kind: Rule
+      services:
+        - name: chat
+          port: 3000
+
