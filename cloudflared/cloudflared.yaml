@@ -93,5 +93,7 @@ data:
       service: http://traefik.kube-system:80
     - hostname: ollama.yuchanns.xyz
       service: http://traefik.kube-system:80
+    - hostname: warp.yuchanns.xyz
+      service: http://traefik.kube-system:80
     - service: http_status:404
 
