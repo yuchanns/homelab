@@ -1,0 +1,208 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: home-note
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      hostname: postgres
+      containers:
+      - image: ghcr.io/cloudnative-pg/postgresql:16.2
+        imagePullPolicy: IfNotPresent
+        name: postgres
+        env:
+        - name: POSTGRES_USER
+          value: affine
+        - name: POSTGRES_PASSWORD
+          value: affine
+        - name: POSTGRES_DB
+          value: affine
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        ports:
+        - containerPort: 5432
+          name: webui
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: home-note
+          subPath: affine_postgressql
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - affine
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 5
+      volumes:
+      - name: home-note
+        persistentVolumeClaim:
+          claimName: home-note
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: home-note
+  labels:
+    app: postgres
+spec:
+  ports:
+  - port: 5432
+    name: http
+  selector:
+    app: postgres
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: home-note
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      hostname: redis
+      containers:
+      - image: redis:alpine
+        imagePullPolicy: IfNotPresent
+        name: redis
+        ports:
+        - containerPort: 6379
+          name: webui
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /data
+          name: home-note
+          subPath: affine_redis
+        livenessProbe:
+          exec:
+            command:
+            - redis-cli
+            - --raw
+            - incr
+            - ping
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 5
+      volumes:
+      - name: home-note
+        persistentVolumeClaim:
+          claimName: home-note
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: home-note
+  labels:
+    app: redis
+spec:
+  ports:
+  - port: 6379
+    name: http
+  selector:
+    app: redis
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: affine
+  namespace: home-note
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: affine
+  template:
+    metadata:
+      labels:
+        app: affine
+    spec:
+      hostname: affine
+      containers:
+      - image: ghcr.io/toeverything/affine-graphql:stable
+        imagePullPolicy: IfNotPresent
+        name: affine
+        env:
+        - name: NODE_OPTIONS
+          value: --import=./scripts/register.js
+        - name: AFFINE_CONFIG_PATH
+          value: /root/.affine/config
+        - name: REDIS_SERVER_HOST
+          value: redis
+        - name: DATABASE_URL
+          value: postgres://affine:affine@postgres:5432/affine
+        - name: NODE_ENV
+          value: production
+        - name: AFFINE_ADMIN_EMAIL
+          value: affine@acme.sh
+        - name: AFFINE_ADMIN_PASSWORD
+          value: affine
+        command:
+        - sh
+        - -c
+        - node ./scripts/self-host-predeploy && node ./dist/index.js
+        ports:
+        - containerPort: 3010
+          name: webui
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /root/.affine/config
+          name: home-note
+          subPath: affine_config
+        - mountPath: /root/.affine/storage
+          name: home-note
+          subPath: affine_storage
+      volumes:
+      - name: home-note
+        persistentVolumeClaim:
+          claimName: home-note
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: affine
+  namespace: home-note
+  labels:
+    app: affine
+spec:
+  ports:
+  - port: 3010
+    name: http
+  selector:
+    app: affine
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: affine-insecure
+  namespace: home-note
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`note.yuchanns.xyz`)
+      kind: Rule
+      services:
+        - name: affine
+          port: 3010
+

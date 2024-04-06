@@ -61,7 +61,7 @@ spec:
       serviceAccountName: kwatch
       containers:
       - name: kwatch
-        image: ghcr.io/abahmed/kwatch:v0.8.3
+        image: ghcr.io/abahmed/kwatch:v0.8.5
         imagePullPolicy: Always
         volumeMounts:
           - name: config-volume
