@@ -157,6 +157,10 @@ spec:
           value: affine@acme.sh
         - name: AFFINE_ADMIN_PASSWORD
           value: affine
+        - name: AFFINE_SERVER_HOST
+          value: note.yuchanns.xyz
+        - name: AFFINE_SERVER_HTTPS
+          value: "true"
         command:
         - sh
         - -c
