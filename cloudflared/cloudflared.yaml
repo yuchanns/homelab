@@ -91,5 +91,7 @@ data:
       service: http://cilium-gateway-cilium-gateway.network:80
     - hostname: alist.yuchanns.xyz
       service: http://cilium-gateway-cilium-gateway.network:80
+    - hostname: emby.yuchanns.xyz
+      service: http://cilium-gateway-cilium-gateway.network:80
     - service: http_status:404
 
