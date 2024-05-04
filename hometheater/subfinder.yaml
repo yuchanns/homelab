@@ -15,7 +15,7 @@ spec:
     spec:
       hostname: subfinder
       containers:
-      - image: allanpk716/chinesesubfinder:v0.52.3
+      - image: allanpk716/chinesesubfinder:v0.55.2
         imagePullPolicy: IfNotPresent
         name: subfinder
         ports:
@@ -42,15 +42,17 @@ spec:
           name: home-theater
           subPath: subfinder-browser
         - mountPath: /media
-          name: home-theater-ext
+          name: home-theater
           subPath: media
+        - mountPath: /alist
+          name: alist-dav
       volumes:
       - name: home-theater
         persistentVolumeClaim:
           claimName: home-theater
-      - name: home-theater-ext
+      - name: alist-dav
         persistentVolumeClaim:
-          claimName: home-theater-ext
+          claimName: alist-dav
 ---
 apiVersion: v1
 kind: Service

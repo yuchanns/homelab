@@ -15,7 +15,7 @@ spec:
     spec:
       hostname: jackett
       containers:
-      - image: linuxserver/jackett:0.20.3906
+      - image: ghcr.io/linuxserver/jackett:0.21.2536
         imagePullPolicy: IfNotPresent
         name: jackett
         env:
@@ -30,16 +30,10 @@ spec:
         - mountPath: /config
           name: home-theater
           subPath: jackett-config
-        - mountPath: /downloads
-          name: home-theater-ext
-          subPath: jackett-downloads
       volumes:
       - name: home-theater
         persistentVolumeClaim:
           claimName: home-theater
-      - name: home-theater-ext
-        persistentVolumeClaim:
-          claimName: home-theater-ext
 ---
 apiVersion: v1
 kind: Service

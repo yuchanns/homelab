@@ -28,17 +28,9 @@
     # replace emby.yuchanns.xyz to yourselves' domain
     cloudflared tunnel route dns k3slab emby.yuchanns.xyz
     ```
-5. I use [qbittorrent](https://github.com/linuxserver/docker-qbittorrent) as the Downloader:
-    ```bash
-    kubectl apply -f ./qbittorrent.yaml
-    ```
-    (optional) Expose `qbittorrent` app on the Internet by Cloudflare Tunnel:
-    ```bash
-    # replace emby.yuchanns.xyz to yourselves' domain
-    cloudflared tunnel route dns k3slab qbittorrent.yuchanns.xyz
-    ```
-6. I use [jackett](https://github.com/linuxserver/docker-jackett) as the Indexer:
+5. I use [jackett](https://github.com/linuxserver/docker-jackett) as the Indexer:
     ```bash
     kubectl apply -f ./jackett.yaml
     ```
 
+[csi-rclone](https://github.com/dvcrn/csi-rclone-reloaded) for mounting alist webdav to filesystem.

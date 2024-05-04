@@ -15,17 +15,23 @@ spec:
     spec:
       hostname: alist
       containers:
-      - image: xhofe/alist-aria2:v3.28.0
+      - image: xhofe/alist-aria2:v3.34.0
         imagePullPolicy: IfNotPresent
         name: alist
         ports:
         - containerPort: 5244
           name: webui
           protocol: TCP
+        - containerPort: 6800
+          name: aria2
+          protocol: TCP
         volumeMounts:
         - mountPath: /opt/alist/data
           name: home-theater
           subPath: alist-data
+        - mountPath: /media
+          name: home-theater
+          subPath: media
         env:
         - name: PUID
           value: "0"
@@ -49,6 +55,8 @@ spec:
   ports:
   - port: 5244
     name: http
+  - port: 6800
+    name: aria2
   selector:
     app: alist
 ---
@@ -68,18 +76,23 @@ spec:
   selector:
     app: alist
 ---
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
 metadata:
-  name: alist-insecure
+  name: alist
   namespace: home-theater
 spec:
-  entryPoints:
-    - web
-  routes:
-    - match: Host(`alist.yuchanns.xyz`)
-      kind: Rule
-      services:
-        - name: alist
-          port: 5244
+  hostnames:
+  - alist.yuchanns.xyz
+  parentRefs:
+  - name: cilium-gateway
+    namespace: network
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: alist
+      port: 5244
 

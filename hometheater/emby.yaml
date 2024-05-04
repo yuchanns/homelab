@@ -15,7 +15,7 @@ spec:
     spec:
       hostname: emby
       containers:
-      - image: lscr.io/linuxserver/emby:4.7.11
+      - image: ghcr.io/linuxserver/emby:4.8.5
         imagePullPolicy: IfNotPresent
         name: emby
         ports:
@@ -33,15 +33,17 @@ spec:
           name: home-theater
           subPath: emby-config
         - mountPath: /media
-          name: home-theater-ext
+          name: home-theater
           subPath: media
+        - mountPath: /alist
+          name: alist-dav
       volumes:
       - name: home-theater
         persistentVolumeClaim:
           claimName: home-theater
-      - name: home-theater-ext
+      - name: alist-dav
         persistentVolumeClaim:
-          claimName: home-theater-ext
+          claimName: alist-dav
 ---
 apiVersion: v1
 kind: Service
@@ -73,18 +75,23 @@ spec:
   selector:
     app: emby
 ---
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
 metadata:
-  name: emby-insecure
+  name: emby
   namespace: home-theater
 spec:
-  entryPoints:
-    - web
-  routes:
-    - match: Host(`emby.yuchanns.xyz`)
-      kind: Rule
-      services:
-        - name: emby
-          port: 8096
+  hostnames:
+  - emby.yuchanns.xyz
+  parentRefs:
+  - name: cilium-gateway
+    namespace: network
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: emby
+      port: 8096
 

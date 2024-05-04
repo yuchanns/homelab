@@ -81,21 +81,17 @@ data:
     no-autoupdate: true
     ingress:
     # Replace yourselves' domain
-    - hostname: nas-tools.yuchanns.xyz
-      service: http://traefik.kube-system:80
-    - hostname: emby.yuchanns.xyz
-      service: http://traefik.kube-system:80
-    - hostname: qbittorrent.yuchanns.xyz
-      service: http://traefik.kube-system:80
-    - hostname: alist.yuchanns.xyz
-      service: http://traefik.kube-system:80
-    - hostname: chat.yuchanns.xyz
-      service: http://traefik.kube-system:80
     - hostname: ollama.yuchanns.xyz
-      service: http://traefik.kube-system:80
-    - hostname: warp.yuchanns.xyz
-      service: http://traefik.kube-system:80
+      service: http://cilium-gateway-cilium-gateway.network:80
     - hostname: note.yuchanns.xyz
-      service: http://traefik.kube-system:80
+      service: http://cilium-gateway-cilium-gateway.network:80
+    - hostname: search.yuchanns.xyz
+      service: http://cilium-gateway-cilium-gateway.network:80
+    - hostname: nas-tools.yuchanns.xyz
+      service: http://cilium-gateway-cilium-gateway.network:80
+    - hostname: alist.yuchanns.xyz
+      service: http://cilium-gateway-cilium-gateway.network:80
+    - hostname: emby.yuchanns.xyz
+      service: http://cilium-gateway-cilium-gateway.network:80
     - service: http_status:404
 

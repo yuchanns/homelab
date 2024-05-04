@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: alist-dav
+  namespace: kube-system # <-- secret needs to be in kube-system namespace, same as CSI controller
+type: Opaque
+stringData:
+  remote: "alist-dav"
+  remotePath: "/alist"
+  vfs-cache-mode: "full"
+  vfs-cache-max-age: 24h
+  buffer-size: 1024M
+  log-file: "/tmp/alist.log"
+  timeout: "60m"
+  allow-other: "true"
+  allow-non-empty: "true"
+  no-gzip-encoding: "true"
+  no-check-certificate: "true"
+  transfers: "50"
+  configData: |
+    [alist-dav]
+    type = webdav
+    url = http://alist.home-theater:5244/dav
+    vendor = other
+    user = yuchanns
+    pass = cmOjdE7hjuWuJHrDun5d7D9TMiuFQFU_r4uU0f_lstzn4v8
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: alist-dav
+  labels:
+    name: alist-dav
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 20Ti
+  storageClassName: rclone
+  csi:
+    driver: csi-rclone
+    volumeHandle: data-id
+    volumeAttributes:
+      secretName: "alist-dav"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: alist-dav
+  namespace: home-theater
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Ti
+  storageClassName: rclone
+  volumeName: alist-dav

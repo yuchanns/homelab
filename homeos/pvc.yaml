@@ -1,8 +1,8 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: home-proxy
-  namespace: home-proxy
+  name: home-os
+  namespace: home-os
 spec:
   accessModes:
     - ReadWriteOnce
