@@ -6,57 +6,8 @@ metadata:
 spec:
   gatewayClassName: cilium
   listeners:
-  - hostname: note.yuchanns.xyz
-    name: http-note
-    port: 80
-    protocol: HTTP
-    allowedRoutes:
-      namespaces:
-        from: All
-  - hostname: hubble.yuchanns.xyz
-    name: hubble
-    port: 80
-    protocol: HTTP
-    allowedRoutes:
-      namespaces:
-        from: All
-  - hostname: vnc.yuchanns.xyz
-    name: vnc
-    port: 80
-    protocol: HTTP
-    allowedRoutes:
-      namespaces:
-        from: All
-  - hostname: search.yuchanns.xyz
-    name: search
-    port: 80
-    protocol: HTTP
-    allowedRoutes:
-      namespaces:
-        from: All
-  - hostname: ollama.yuchanns.xyz
-    name: ollama
-    port: 80
-    protocol: HTTP
-    allowedRoutes:
-      namespaces:
-        from: All
-  - hostname: alist.yuchanns.xyz
-    name: alist
-    port: 80
-    protocol: HTTP
-    allowedRoutes:
-      namespaces:
-        from: All
-  - hostname: nas-tools.yuchanns.xyz
-    name: nas-tools
-    port: 80
-    protocol: HTTP
-    allowedRoutes:
-      namespaces:
-        from: All
-  - hostname: emby.yuchanns.xyz
-    name: emby
+  - hostname: "*.yuchanns.xyz"
+    name: yuchanns-wildcard
     port: 80
     protocol: HTTP
     allowedRoutes:
