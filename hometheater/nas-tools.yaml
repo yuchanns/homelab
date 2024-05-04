@@ -40,7 +40,7 @@ spec:
         - mountPath: /config
           name: home-theater
           subPath: nastools-config
-        - mountPath: /media/download
+        - mountPath: /media
           name: home-theater
           subPath: media
         - name: config

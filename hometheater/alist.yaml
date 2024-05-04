@@ -22,10 +22,16 @@ spec:
         - containerPort: 5244
           name: webui
           protocol: TCP
+        - containerPort: 6800
+          name: aria2
+          protocol: TCP
         volumeMounts:
         - mountPath: /opt/alist/data
           name: home-theater
           subPath: alist-data
+        - mountPath: /media
+          name: home-theater
+          subPath: media
         env:
         - name: PUID
           value: "0"
@@ -49,6 +55,8 @@ spec:
   ports:
   - port: 5244
     name: http
+  - port: 6800
+    name: aria2
   selector:
     app: alist
 ---
