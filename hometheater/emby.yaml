@@ -35,10 +35,15 @@ spec:
         - mountPath: /media
           name: home-theater
           subPath: media
+        - mountPath: /alist
+          name: alist-dav
       volumes:
       - name: home-theater
         persistentVolumeClaim:
           claimName: home-theater
+      - name: alist-dav
+        persistentVolumeClaim:
+          claimName: alist-dav
 ---
 apiVersion: v1
 kind: Service

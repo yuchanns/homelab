@@ -46,31 +46,20 @@ spec:
         - name: config
           mountPath: /root/.config/rclone
           readOnly: true
+        - mountPath: /alist
+          name: alist-dav
         env:
         - name: NASTOOL_AUTO_UPDATE
           value: "false"
         - name: NASTOOL_CN_UPDATE
           value: "false"
-        resources:
-          limits:
-            nextflow.io/fuse: 1
-        securityContext:
-          privileged: true
-        lifecycle:
-          postStart:
-            exec:
-              command:
-                - "sh"
-                - "-c"
-                - |
-                  mkdir /alist
-                  rclone mount --daemon --vfs-cache-mode full --vfs-cache-max-age 12h --allow-other \
-                      --allow-non-empty --no-check-certificate --no-gzip-encoding --timeout 60m \
-                      NASTOOL:alist /alist
       volumes:
       - name: home-theater
         persistentVolumeClaim:
           claimName: home-theater
+      - name: alist-dav
+        persistentVolumeClaim:
+          claimName: alist-dav
       - name: config
         configMap:
           name: rclone

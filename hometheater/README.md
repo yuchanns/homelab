@@ -42,3 +42,4 @@
     kubectl apply -f ./jackett.yaml
     ```
 
+[csi-rclone](https://github.com/dvcrn/csi-rclone-reloaded) for mounting alist webdav to filesystem.
