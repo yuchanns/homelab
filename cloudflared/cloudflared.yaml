@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: cloudflared
-        image: cloudflare/cloudflared:2024.3.0
+        image: cloudflare/cloudflared:2024.4.1
         args:
         - tunnel
         # Points cloudflared to the config file, which configures what
@@ -81,17 +81,7 @@ data:
     no-autoupdate: true
     ingress:
     # Replace yourselves' domain
-    - hostname: ollama.yuchanns.xyz
-      service: http://cilium-gateway-cilium-gateway.network:80
-    - hostname: note.yuchanns.xyz
-      service: http://cilium-gateway-cilium-gateway.network:80
-    - hostname: search.yuchanns.xyz
-      service: http://cilium-gateway-cilium-gateway.network:80
-    - hostname: nas-tools.yuchanns.xyz
-      service: http://cilium-gateway-cilium-gateway.network:80
-    - hostname: alist.yuchanns.xyz
-      service: http://cilium-gateway-cilium-gateway.network:80
-    - hostname: emby.yuchanns.xyz
+    - hostname: "*.yuchanns.xyz"
       service: http://cilium-gateway-cilium-gateway.network:80
     - service: http_status:404
 
