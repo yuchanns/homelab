@@ -29,7 +29,7 @@ sha256sum --check cilium-linux-${CLI_ARCH}.tar.gz.sha256sum
 sudo tar xzvfC cilium-linux-${CLI_ARCH}.tar.gz /usr/local/bin
 rm cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
 
-sudo -E cilium install --version 1.15.4 --set=ipam.operator.clusterPoolIPv4PodCIDRList="10.42.0.0/16",kubeProxyReplacement=true,k8sServiceHost=${API_SERVER_IP},k8sServicePort=${API_SERVER_IP},gatewayAPI.enabled=true,hubble.relay.enabled=true,hubble.ui.enabled=true
+sudo -E cilium install --version 1.15.4 --set=ipam.operator.clusterPoolIPv4PodCIDRList="10.42.0.0/16",kubeProxyReplacement=true,k8sServiceHost=${API_SERVER_IP},k8sServicePort=${API_SERVER_IP},gatewayAPI.enabled=true,hubble.relay.enabled=true,hubble.ui.enabled=true,bpf.masquerade=true
 ```
 2. (optional) For Cloudflare Tunnel, check [cloudflared](./cloudflared/README.md)
 3. For Home Theater, take a look on [hometheater](./hometheater/README.md).
