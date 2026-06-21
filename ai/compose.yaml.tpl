@@ -4,13 +4,15 @@ services:
     container_name: wxocr
     restart: unless-stopped
     networks:
-      - homelab
+      - edge
+      - ai
   copilot:
     image: ghcr.io/yuchanns/copilot-openai-api:latest
     container_name: copilot
     restart: unless-stopped
     networks:
-      - homelab
+      - edge
+      - ai
     environment:
       COPILOT_TOKEN: "${COPILOT_TOKEN}"
     volumes:
@@ -18,7 +20,7 @@ services:
   pglobe:
     image: pgvector/pgvector:pg17
     networks:
-      - homelab
+      - data
     environment:
       POSTGRES_USER: 'postgres'
       POSTGRES_DATABASE: 'postgres'
@@ -34,7 +36,7 @@ services:
   pgvector:
     image: pgvector/pgvector:pg17
     networks:
-      - homelab
+      - data
     environment:
       POSTGRES_USER: 'postgres'
       POSTGRES_DATABASE: 'postgres'
@@ -48,5 +50,12 @@ services:
       retries: 5
     restart: unless-stopped
 networks:
-  homelab:
+  edge:
     external: true
+    name: homelab_edge
+  ai:
+    external: true
+    name: homelab_ai
+  data:
+    external: true
+    name: homelab_data

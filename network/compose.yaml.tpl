@@ -3,7 +3,7 @@ services:
     image: k8s.gcr.io/pause:3.9
     container_name: pause
     networks:
-      - homelab
+      - edge
     restart: unless-stopped
   tailscale:
     image: tailscale/tailscale:latest
@@ -43,8 +43,9 @@ services:
     image: ghcr.io/yuchanns/middleman:latest
     restart: unless-stopped
     networks:
-      - homelab
+      - edge
 
 networks:
-  homelab:
+  edge:
     external: true
+    name: homelab_edge

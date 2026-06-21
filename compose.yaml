@@ -11,7 +11,7 @@ services:
       WATCHTOWER_CLEANUP: true
       WATCHTOWER_SCHEDULE: "@midnight"
     networks:
-      - homelab
+      - ops
   dozzle-agent:
     image: amir20/dozzle:latest
     command: agent
@@ -20,7 +20,10 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
       - 7007:7007
+    networks:
+      - ops
 
 networks:
-  homelab:
+  ops:
     external: true
+    name: homelab_ops

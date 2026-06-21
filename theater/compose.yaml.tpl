@@ -33,7 +33,9 @@ services:
         condition: service_healthy
     image: jxxghp/moviepilot-v2:latest
     networks:
-      - homelab
+      - edge
+      - media
+      - data
 
   redis:
     container_name: redis
@@ -48,7 +50,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - homelab
+      - data
   emby:
     image: ghcr.io/jellyfin/jellyfin:latest
     container_name: jellyfin
@@ -63,7 +65,8 @@ services:
     ports:
       - "31096:8096"
     networks:
-      - homelab
+      - edge
+      - media
   qbittorent:
     image: ghcr.io/linuxserver/qbittorrent:latest
     container_name: qbittorent
@@ -77,7 +80,8 @@ services:
       - "./qbittorrent:/config"
       - "./alist:/opt/openlist/data"
     networks:
-      - homelab
+      - edge
+      - media
     ports:
       - "31097:8080"
   subfinder:
@@ -93,7 +97,8 @@ services:
       - "./subfinder/browser:/root/.cache/rod/browser"
       - "./media:/media"
     networks:
-      - homelab
+      - edge
+      - media
   alist:
     image: openlistteam/openlist:latest
     container_name: alist
@@ -107,8 +112,16 @@ services:
     ports:
       - "15244:5244"
     networks:
-      - homelab
+      - edge
+      - media
 
 networks:
-  homelab:
+  edge:
     external: true
+    name: homelab_edge
+  media:
+    external: true
+    name: homelab_media
+  data:
+    external: true
+    name: homelab_data
