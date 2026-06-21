@@ -1,0 +1,36 @@
+# Default-deny: this repository lives inside the running homelab directory.
+# Directories stay traversable so selected templates can be unignored.
+*
+!*/
+
+!/.gitignore
+!/README.md
+!/compose.yaml
+
+!/docs/**/*.md
+!/env/*.example
+!/scripts/*.py
+!/scripts/*.sh
+
+# Sanitized templates only. Real live files and runtime state remain ignored.
+/ai/*
+!/ai/compose.yaml.tpl
+
+/network/*
+!/network/compose.yaml.tpl
+!/network/kong/
+/network/kong/*
+!/network/kong/kong.yml.tpl
+
+/theater/*
+!/theater/compose.yaml.tpl
+
+/vm/*
+!/vm/compose.yml.tpl
+
+# Never track nested repositories or runtime state.
+.git/
+**/.git/
+
+# Checked-out application sources are runtime dependencies, not homelab config.
+/src/
