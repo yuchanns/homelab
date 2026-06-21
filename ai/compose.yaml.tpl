@@ -15,17 +15,6 @@ services:
       COPILOT_TOKEN: "${COPILOT_TOKEN}"
     volumes:
       - "~/.config/github-copilot:/home/appuser/.config/github-copilot"
-  kagiapi:
-    image: ghcr.io/yuchanns/kagiapi:latest
-    container_name: kagiapi
-    restart: unless-stopped
-    networks:
-      - homelab
-    ports:
-      - 18000:8000
-    environment:
-      KAGI_TOKEN: "${KAGI_TOKEN}"
-      ACCESS_TOKEN: "${KAGIAPI_ACCESS_TOKEN}"
   pglobe:
     image: pgvector/pgvector:pg17
     networks:

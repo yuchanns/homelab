@@ -82,8 +82,6 @@ def sanitize_ai_compose() -> None:
     content = read("ai/compose.yaml")
     replacements = {
         "COPILOT_TOKEN": "COPILOT_TOKEN",
-        "KAGI_TOKEN": "KAGI_TOKEN",
-        "ACCESS_TOKEN": "KAGIAPI_ACCESS_TOKEN",
         "POSTGRES_PASSWORD": "POSTGRES_PASSWORD",
     }
     for key, placeholder in replacements.items():
