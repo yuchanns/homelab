@@ -26,10 +26,10 @@ services:
       - 3389:3389/tcp
       - 3389:3389/udp
     volumes:
-      - ./storage:/storage
-      - ./win11.iso:/boot.iso
-      - ./shared:/shared
-      - ./storage2:/storage2
+      - /srv/homelab/vm/storage:/storage
+      - /srv/homelab/vm/win11.iso:/boot.iso
+      - /srv/homelab/vm/shared:/shared
+      - /srv/homelab/vm/storage2:/storage2
     restart: always
     stop_grace_period: 2m
     networks:

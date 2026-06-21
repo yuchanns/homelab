@@ -6,12 +6,12 @@ services:
     hostname: moviepilot-v2
     user: "0:0"
     volumes:
-      - './media:/media' #媒体
-      - './media/downloaded:/downloads' #媒体
-      - './moviepilot/config:/config' #持久化配置
-      - './moviepilot/core:/moviepilot/.cache/ms-playwright' #内核浏览器
-      - './media/torrents:/torrents'  #TR种子位置
-      - './qbittorrent/qBittorrent/data/data/BT_backup:/BT_backup' #QB种子位置
+      - '/srv/homelab/media/library:/media' #媒体
+      - '/srv/homelab/media/library/downloaded:/downloads' #媒体
+      - '/srv/homelab/state/moviepilot/config:/config' #持久化配置
+      - '/srv/homelab/state/moviepilot/core:/moviepilot/.cache/ms-playwright' #内核浏览器
+      - '/srv/homelab/media/library/torrents:/torrents'  #TR种子位置
+      - '/srv/homelab/state/qbittorrent/qBittorrent/data/data/BT_backup:/BT_backup' #QB种子位置
     environment:
       - 'MOVIEPILOT_AUTO_UPDATE=false'
       - 'NGINX_PORT=3000'
@@ -40,7 +40,7 @@ services:
   redis:
     container_name: redis
     volumes:
-        - ./redis/data:/data
+        - /srv/homelab/state/redis/data:/data
     image: redis
     command: redis-server --save 600 1 --requirepass ${MOVIEPILOT_REDIS_PASSWORD}
     restart: always
@@ -59,9 +59,9 @@ services:
     environment:
       - TZ=Asia/Shanghai
     volumes:
-      - ./media:/media
-      - ./jellyfin:/config
-      - ./jellyfin_cache:/cache
+      - /srv/homelab/media/library:/media
+      - /srv/homelab/state/jellyfin/config:/config
+      - /srv/homelab/state/jellyfin/cache:/cache
     ports:
       - "31096:8096"
     networks:
@@ -75,10 +75,10 @@ services:
     environment:
       TZ: "Asia/Shanghai"
     volumes:
-      - "./media/downloaded:/downloads"
-      - "./media/downloaded:/media/downloaded"
-      - "./qbittorrent:/config"
-      - "./alist:/opt/openlist/data"
+      - "/srv/homelab/media/library/downloaded:/downloads"
+      - "/srv/homelab/media/library/downloaded:/media/downloaded"
+      - "/srv/homelab/state/qbittorrent:/config"
+      - "/srv/homelab/state/alist:/opt/openlist/data"
     networks:
       - edge
       - media
@@ -93,9 +93,9 @@ services:
       TZ: "Asia/Shanghai"
       PERMS: "false"
     volumes:
-      - "./subfinder/config:/config"
-      - "./subfinder/browser:/root/.cache/rod/browser"
-      - "./media:/media"
+      - "/srv/homelab/state/subfinder/config:/config"
+      - "/srv/homelab/state/subfinder/browser:/root/.cache/rod/browser"
+      - "/srv/homelab/media/library:/media"
     networks:
       - edge
       - media
@@ -107,8 +107,8 @@ services:
     environment:
       TZ: "Asia/Shanghai"
     volumes:
-      - "./media:/media"
-      - "./alist:/opt/openlist/data"
+      - "/srv/homelab/media/library:/media"
+      - "/srv/homelab/state/alist:/opt/openlist/data"
     ports:
       - "15244:5244"
     networks:

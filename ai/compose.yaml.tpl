@@ -26,7 +26,7 @@ services:
       POSTGRES_DATABASE: 'postgres'
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     volumes:
-      - ./pglobe_data:/var/lib/postgresql/data
+      - /srv/homelab/state/postgres/pglobe:/var/lib/postgresql/data
     healthcheck:
       test: [CMD-SHELL, pg_isready -d postgres -U postgres]
       interval: 10s
@@ -42,7 +42,7 @@ services:
       POSTGRES_DATABASE: 'postgres'
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     volumes:
-      - ./pgvector_data:/var/lib/postgresql/data
+      - /srv/homelab/state/postgres/pgvector:/var/lib/postgresql/data
     healthcheck:
       test: [CMD-SHELL, pg_isready -d postgres -U postgres]
       interval: 10s

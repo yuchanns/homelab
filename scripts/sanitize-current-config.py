@@ -8,7 +8,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def read(relative: str) -> str:
-    return (ROOT / relative).read_text()
+    path = Path(relative)
+    if not path.is_absolute():
+        path = ROOT / path
+    return path.read_text()
 
 
 def write(relative: str, content: str) -> None:
@@ -53,7 +56,7 @@ def sanitize_network_compose() -> None:
 
 
 def sanitize_kong() -> None:
-    content = read("network/kong/kong.yml")
+    content = read("/srv/homelab/config/kong/kong.yml")
     write("network/kong/kong.yml.tpl", content)
 
 

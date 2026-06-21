@@ -16,7 +16,7 @@ services:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_USERSPACE=false
     volumes:
-      - "./tailscale:/var/lib/tailscale"
+      - "/srv/homelab/state/tailscale:/var/lib/tailscale"
     devices:
       - /dev/net/tun:/dev/net/tun
     cap_add:
@@ -37,7 +37,7 @@ services:
       KONG_PROXY_ERROR_LOG: "/dev/stderr"
       KONG_ADMIN_ERROR_LOG: "/dev/stderr"
     volumes:
-      - "./kong:/kong/declarative"
+      - "/srv/homelab/config/kong:/kong/declarative"
   middleman:
     container_name: mm
     image: ghcr.io/yuchanns/middleman:latest
