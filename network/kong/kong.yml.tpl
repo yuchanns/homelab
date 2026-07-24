@@ -75,3 +75,13 @@ services:
       - name: router
         hosts:
           - router.yuchanns.xyz
+  - name: gitlab-example
+    url: http://gitlab-example:8929
+    routes:
+      - name: gitlab-example
+        hosts:
+          - git.yuchanns.xyz
+        paths:
+          - /
+        strip_path: false
+        preserve_host: true
