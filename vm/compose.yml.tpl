@@ -3,8 +3,9 @@ services:
     image: dockurr/windows
     container_name: windows
     environment:
+      TZ: "Asia/Shanghai"
       VERSION: "11"
-      RAM_SIZE: "6G"
+      RAM_SIZE: "8G"
       DISK_SIZE: "100G"
       DISK2_SIZE: "1.5T"
       CPU_CORES: "4"
